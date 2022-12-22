@@ -4,6 +4,12 @@
       <div data-i18n="Home">Home</div>
     </a>
 </li>
+<li class="menu-item {{($route=='report.index')?'active':''}} {{($route=='report.generate')?'active':''}}">
+  <a href="{{ route('report.index') }}" class="menu-link">
+    <i class="menu-icon tf-icons ti ti-report"></i>
+    <div data-i18n="Report">Report</div>
+  </a>
+</li>
 <li class="menu-item {{($route=='sales.index')?'active':''}} {{($route=='sales.create')?'active':''}}">
     <a href="{{ route('sales.index') }}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-currency-naira"></i>
@@ -14,12 +20,6 @@
     <a href="{{ route('expenses.index') }}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-cash"></i>
       <div data-i18n="Expense">Expense</div>
-    </a>
-</li>
-<li class="menu-item {{($route=='report.index')?'active':''}} {{($route=='report.generate')?'active':''}}">
-    <a href="{{ route('report.index') }}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-report"></i>
-      <div data-i18n="Report">Report</div>
     </a>
 </li>
 <li class="menu-item {{($route=='users.index')?'active':''}}">

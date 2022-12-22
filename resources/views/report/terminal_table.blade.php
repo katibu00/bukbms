@@ -9,13 +9,12 @@
                 <th>S/N</th>
                 <th>Date</th>
                 <th>Type</th>
-
                 <th>Driver</th>
                 <th>Cashier</th>
                 <th>Terminal</th>
-                <th>Tickets (&#8358;)</th>
+                <th>Tickets</th>
                 <th>Item</th>
-                <th>Amount (&#8358;)</th>
+                <th>Amount</th>
 
                 
             </tr>
@@ -30,8 +29,8 @@
             @foreach ($dates as $key => $date)
                 <tr class="table-success">
                     @php
-                        $sales = App\Models\Sale::where('date',$date->date)->get();
-                        $expenses = App\Models\Expense::where('date',$date->date)->get();
+                        $sales = App\Models\Sale::where('terminal_id',$terminal_id)->where('date',$date->date)->get();
+                      
                         $sum_sales = 0;
                         $sum_expenses = 0;
                     @endphp
@@ -61,57 +60,11 @@
                     <td><strong class="text-primary">&#8358;{{ number_format($sum_sales,0) }}</strong></td>
                 </tr>
 
-                @foreach ($expenses as $expense)
-                <tr class="table-danger">
-                    <td></td>
-                    <td></td>
-                    <td>@if($loop->first)<em>Expense</em> @endif</td>
-                    <td>{{ $expense->driver->name }}</td>
-                    <td>{{ $expense->cashier->name }}</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>{{ $expense->item->name }}</td>
-                    <td>{{ number_format($expense->amount,0) }}</td>
-                </tr>
-                @php
-                    $sum_expenses += $expense->amount;
-                @endphp
-                @endforeach
-                @php
-                     $total_expenses += $sum_expenses;
-                @endphp
-                <tr>
-                    <td colspan=""></td>
-                    <td colspan="7"></td>
-                    <td><strong class="text-warning">&#8358;{{ number_format($sum_expenses,0) }}</strong></td>
-                </tr>
-                <tr class="table-secondary">
-                    <td></td>
-                    <td></td>
-                    <td>Commission</td>
-                    <td colspan="3"></td>
-                   
-                    <td>10%</td>
-                    @php
-                      $com = $sum_sales/100;
-                    @endphp
-                    <td></td>
-                    <td> <strong> &#8358;{{ number_format($com,0) }}</strong></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    @php
-                        $net = ($sum_sales - $sum_expenses) -$com;
-                    @endphp
-                    <td colspan="7" class="text-center"> <strong> Net Revenue = @if($net > 1)<span class="text-success">&#8358;{{ number_format($net,0) }}<span> @else <span class="text-danger">&#8358;{{ number_format($net,0) }}<span> @endif</strong></td>
-                </tr>
-                
             @endforeach
             <tr class="table-primary">
                 <td></td>
                 <td></td>
-                <td colspan="7" class="text-center"> <strong> Total Revenue = &#8358;{{ number_format($total_sales,0) }} Total Expense = &#8358;{{ number_format($total_expenses,0) }}</strong></td>
+                <td colspan="7" class="text-center"> <strong> Total Revenue = &#8358;{{ number_format($total_sales,0) }}</strong></td>
             </tr>
         </tbody>
     </table>

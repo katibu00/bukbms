@@ -11,31 +11,36 @@
         <div class="card">
           <div class="card-body">
             
-            <div class="d-fle4x flex-row align-items-center he4ader-elements">
+            <div class="d-flex4 align-items-center he4ader-elements">
               <form action="{{ route('report.generate')}}" method="post">
                 @csrf
                 <div class="row">
                 <div class="col-md-3 mb-2">
                     <label>Type</label>
-                    <select name="report" id="type" class="form-select form-select-sm" required>
+                    <select name="report" id="report" class="form-select form-select-sm" required>
                         <option value=""></option>
-                        <option value="gross" {{ @$report == 'gross'? 'selected':''}}>Gross</option>
-                        <option value="terminal" {{ @$report == 'terminal'? 'selected':''}}>By Terminal</option>
-                        <option value="driver" {{ @$report == 'driver'? 'selected':''}}>By Driver</option>
+                        <option value="gross" {{ @$report == 'gross'? 'selected':''}}>Detailed Report</option>
+                        <option value="terminal" {{ @$report == 'terminal'? 'selected':''}}>Sales (Terminal)</option>
+                        <option value="driver" {{ @$report == 'driver'? 'selected':''}}>Sales (Driver)</option>
+                        <option value="summary" {{ @$report == 'summary'? 'selected':''}}>Summary</option>
                     </select>
                 </div>
                 <div class="col-md-3 mb-2 d-none" id="terminal_div">
                     <label>Terminal</label>
-                    <select name="terminal_id" class="form-select form-select-sm">
+                    <select name="terminal_id" id="terminal_id" class="form-select form-select-sm">
                         <option value=""></option>
-                        
+                        @foreach ($terminals as $terminal)
+                        <option value="{{ $terminal->id }}" {{ @$terminal_id == $terminal->id? 'selected':''}}>{{ $terminal->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-3 mb-2 d-none" id="driver_div">
                     <label>Driver</label>
-                    <select name="driver_id" class="form-select form-select-sm">
+                    <select name="driver_id" id="driver_id" class="form-select form-select-sm">
                         <option value=""></option>
-                        
+                        @foreach ($drivers as $driver)
+                        <option value="{{ $driver->id }}" {{ @$driver_id == $driver->id? 'selected':''}}>{{ $driver->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-3 mb-2">
@@ -72,9 +77,39 @@
       @if(@$report == 'gross')
         <div class="col-lg-12 col-12 mb-4">
             <div class="card">
-            <h5 class="card-header">Gross Report</h5>
+            <h5 class="card-header">Detailed Report (All)</h5>
             <div class="card-body">
                 @include('report.gross_table')
+            </div>
+            </div>
+        </div>
+      @endif
+      @if(@$report == 'driver')
+        <div class="col-lg-12 col-12 mb-4">
+            <div class="card">
+            <h5 class="card-header">Detailed Report (Driver)</h5>
+            <div class="card-body">
+                @include('report.driver_table')
+            </div>
+            </div>
+        </div>
+      @endif
+      @if(@$report == 'summary')
+        <div class="col-lg-12 col-12 mb-4">
+            <div class="card">
+            <h5 class="card-header">Summary Report</h5>
+            <div class="card-body">
+                @include('report.summary_table')
+            </div>
+            </div>
+        </div>
+      @endif
+      @if(@$report == 'terminal')
+        <div class="col-lg-12 col-12 mb-4">
+            <div class="card">
+            <h5 class="card-header">Detailed Report (Terminal)</h5>
+            <div class="card-body">
+                @include('report.terminal_table')
             </div>
             </div>
         </div>
@@ -89,22 +124,28 @@
 
 <script type="text/javascript">
     $(function() {
-        $(document).on('change', '#type', function() {
+        $(document).on('change', '#report', function() {
 
             var type = $('#report').val();
-
+            ///terminal
             if(type == 'terminal')
             {
                 $("#terminal_div").removeClass("d-none");
+                $("#terminal_id").attr("required", true);
             }else{
                 $("#terminal_div").addClass("d-none");
+                $("#terminal_id").attr("required", false);
             }
+            ///driver
             if(type == 'driver')
             {
                 $("#driver_div").removeClass("d-none");
+                $("#driver_id").attr("required", true);
             }else{
                 $("#driver_div").addClass("d-none");
+                $("#driver_id").attr("required", false);
             }
+
 
 
         });
@@ -129,4 +170,15 @@
 
     });
 </script>
+
+@if(@$report == 'terminal')
+<script type="text/javascript">
+    $("#terminal_div").removeClass("d-none");
+</script>
+@endif
+@if(@$report == 'driver')
+<script type="text/javascript">
+    $("#driver_div").removeClass("d-none");
+</script>
+@endif
 @endsection

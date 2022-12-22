@@ -30,8 +30,8 @@
             @foreach ($dates as $key => $date)
                 <tr class="table-success">
                     @php
-                        $sales = App\Models\Sale::where('date',$date->date)->get();
-                        $expenses = App\Models\Expense::where('date',$date->date)->get();
+                        $sales = App\Models\Sale::where('driver_id',@$driver_id)->where('date',$date->date)->get();
+                        $expenses = App\Models\Expense::where('driver_id',@$driver_id)->where('date',$date->date)->get();
                         $sum_sales = 0;
                         $sum_expenses = 0;
                     @endphp
@@ -85,24 +85,11 @@
                     <td colspan="7"></td>
                     <td><strong class="text-warning">&#8358;{{ number_format($sum_expenses,0) }}</strong></td>
                 </tr>
-                <tr class="table-secondary">
-                    <td></td>
-                    <td></td>
-                    <td>Commission</td>
-                    <td colspan="3"></td>
-                   
-                    <td>10%</td>
-                    @php
-                      $com = $sum_sales/100;
-                    @endphp
-                    <td></td>
-                    <td> <strong> &#8358;{{ number_format($com,0) }}</strong></td>
-                </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     @php
-                        $net = ($sum_sales - $sum_expenses) -$com;
+                        $net = $sum_sales - $sum_expenses;
                     @endphp
                     <td colspan="7" class="text-center"> <strong> Net Revenue = @if($net > 1)<span class="text-success">&#8358;{{ number_format($net,0) }}<span> @else <span class="text-danger">&#8358;{{ number_format($net,0) }}<span> @endif</strong></td>
                 </tr>

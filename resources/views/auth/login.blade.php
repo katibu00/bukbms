@@ -74,7 +74,7 @@
                   {{-- <span class="app-brand-logo demo">
                     JSR
                   </span> --}}
-                  <span class="app-brand-text demo text-body fw-bold ms-1">JSR</span>
+                  <span class="app-brand-text demo text-body fw-bold ms-1">BUKBMS</span>
                 </a>
               </div>
               <!-- /Logo -->
